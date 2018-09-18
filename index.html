@@ -13,11 +13,11 @@
 </head>
 
 <body>
-    <header>
+    <header class="container-fluid offset-md-1 col-md-10">
         <h1 class="jumbotron">Search a Game that you want to find out more about it</h1>
     </header>
-    <section class="container-fluid offset-md-1 col-md-11">
-        <form>
+    <section class="container-fluid offset-md-1 col-md-10">
+        <form class="container-fluid offset-md-1 col-md-10"> 
             <div class="form-group">
                 <label for="exampleInputName">Game Input</label>
                 <input type="Name" class="form-control" id="game-input" placeholder="Enter Game">
@@ -25,17 +25,28 @@
             <button type="submit" id="add-user" class="btn btn-primary">Submit</button>
         </form>
     </section>
-    <section class="container-fluid offset-md-1 col-md-11">
-        <div id="img"></div>
-        <div id="info"></div>
-        <div id="buy"></div>
+    <section class="container-fluid offset-md-1 col-md-10">
+        <div id="img">
+            <img class="container-fluid offset-md-1 col-sm-4" src="https://static-assets-prod.epicgames.com/fortnite/static/webpack/8704d4d5ffd1c315ac8e2c805a585764.jpg" alt="Fornite">
+        </div>
+        <div id="info">
+            <p class="offset-md-1 col-sm-6">Fortnite is an online video game first released in 2017 and developed by Epic Games. It is available as separate software packages having different game modes that otherwise share the same general gameplay and game engine</p>
+        </div>
+        <div id="buy">
+            <p class="offset-md-1 col-sm-6">Free on all platforms</p>
+        </div>
     </section>
-    <section class="container-fluid offset-md-1 col-md-11">
+    <section class="container-fluid offset-md-1 col-md-">
+        <div id="livestreams">
+            <a class="offset-md-1 col-sm-6" href="https://www.twitch.tv/directory/game/Fortnite">Fornite LiveStreams</a>
+        </div>
+    </section>
+    <section class="container-fluid offset-md-1 col-md-10">
         <div class="review">
         </div>
-        <form>
+        <form class="container-fluid offset-md-1 col-md-10">
             <div class="form-group row">
-                <label for="comment-input">How did you hear about us?</label>
+                <label for="comment-input">Add Your Review</label>
                 <textarea class="form-control" id="comment-input" rows="5"></textarea>
             </div>
             <button class="btn btn-default" id="add-comment" type="submit">Submit</button>
