@@ -6,7 +6,7 @@ var igdbClientID = "efabb003d9fafebaa5de78b86216cd85"
 var igdbQueryURL = "https://api-endpoint.igdb.com"
 var twitchClientID = "vaio0m3xzniwve47sl16xucnwvluef"
 var twitchQueryURL = "https://api.twitch.tv/helix"
-var gameID = "33214" // hard coded game var
+var gameID = "33214" // hard coded game ID var
 
 // Document ready function
 $(document).ready(function () {
@@ -47,3 +47,25 @@ $(document).ready(function () {
 
 })
 
+//establish variables
+
+// initialize libraries and APIs
+
+//create ajax calls to retrieve information from search bar on-click
+
+//submit search request from the user to IGDB
+
+//display results from IGDB in a list form
+
+//when game is selected by the user:
+    //send game name to Twitch API and record official game name to firebase
+    
+    //display game information from IGDB
+    
+    //display video feed from Twitch
+    
+    //display game name on page with search count information from firebase
+    
+    //display "trending" graph and/or consumer rating graph
+
+    
