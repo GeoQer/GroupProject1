@@ -1,7 +1,12 @@
 
+// igdb API Documentation: https://igdb.github.io/api/
+// Twitch API  Documentation: https://dev.twitch.tv/docs
+
+var igdbClientID = "efabb003d9fafebaa5de78b86216cd85"
+var igdbQueryURL = "https://api-endpoint.igdb.com"
 var twitchClientID = "vaio0m3xzniwve47sl16xucnwvluef"
 var twitchQueryURL = "https://api.twitch.tv/helix"
-console.log(twitchQueryURL);
+var gameID = "33214" // hard coded game var
 
 // Document ready function
 $(document).ready(function () {
@@ -20,10 +25,11 @@ $(document).ready(function () {
         }).then(function (response) {
             console.log(response); //response for details of game from twitch
     
-            var gameID = "33214" //hardcoded game id var (replace with parsed )
+            var gameID = "" //game id var (replace with parsed )
 
             // aperently needs to be pushed to a global var for it to be called bellow?
-    
+            
+            // This ajax below has been tested and works. but since it requires previous ajax information it wornt work without hardcodeing
         }).then( //only AFTER that is finished and we have the ID of game 
             //Run ajax to grab stream data from twich useing ID of game
             $.ajax({
