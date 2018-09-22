@@ -2,16 +2,48 @@
 // igdb API Documentation: https://igdb.github.io/api/
 // Twitch API  Documentation: https://dev.twitch.tv/docs
 
+var proxyServerURL = "https://damp-everglades-65293.herokuapp.com/"
 var igdbClientID = "efabb003d9fafebaa5de78b86216cd85"
 var igdbQueryURL = "https://api-endpoint.igdb.com"
 var twitchClientID = "vaio0m3xzniwve47sl16xucnwvluef"
 var twitchQueryURL = "https://api.twitch.tv/helix"
-var gameID = "33214" // hard coded game ID var
+var twitchGameID = "33214" // hard coded game ID var
+var gameName = "Hitman"
+var igdbID;
 
 // Document ready function
 $(document).ready(function () {
 
-    twitchSearchFunction
+    $.ajax({
+        type: 'GET',
+        url: proxyServerURL + igdbQueryURL + '/games/?search='+ gameName + '&fields=*',
+        dataType: 'json',
+        headers: {
+            'user-key': igdbClientID,
+            'Accept': 'application/json'
+        }
+    }).then(function (response) {
+        console.log(response);
+        igdbID = response[0].id;
+        console.log(igdbID);
+        
+    }).then(function(){
+        $.ajax({
+            type: 'GET',
+            url: proxyServerURL + igdbQueryURL + '/games/' + igdbID + '?search=&fields=*',
+            dataType: 'json',
+            headers: {
+                'user-key': igdbClientID,
+                'Accept': 'application/json'
+            }
+        }).then(function (response) {
+            console.log(igdbID);
+            console.log(response);
+            
+        });
+    })
+
+    
 
     function twitchSearchFunction() { //funtion for twitch search put into a funtion for callback reasons
         // ajax call for twitch to give game ID
@@ -24,10 +56,6 @@ $(document).ready(function () {
             },
         }).then(function (response) {
             console.log(response); //response for details of game from twitch
-    
-            var gameID = "" //game id var (replace with parsed )
-
-            // aperently needs to be pushed to a global var for it to be called bellow?
             
             // This ajax below has been tested and works. but since it requires previous ajax information it wornt work without hardcodeing
         }).then( //only AFTER that is finished and we have the ID of game 
@@ -44,6 +72,8 @@ $(document).ready(function () {
             })
         );
     }
+
+    twitchSearchFunction;
 
 })
 
