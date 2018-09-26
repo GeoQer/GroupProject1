@@ -28,6 +28,8 @@ $(document).ready(function () {
         igdbID = parseInt($(this).attr("value"));
         console.log(igdbID);
         callTwo();
+        twitchSearchFunction();
+
     });
     $.ajax({
         type: 'GET',
@@ -94,6 +96,8 @@ $(document).ready(function () {
             };
             $("#info").empty();
             $("#info").text("Game Summary: " + igdbSummaryReturn);
+            $("#info").append("<br>");
+            $("#info").append("<p class='bold'>Rated ESRB: " + igdbEsrbReturn+"</p>");
 
             $("#gName").empty();
             $("#gName").text("ID Number: " + igdbID + "- Game Name: " + igdbNameReturn);
@@ -141,7 +145,7 @@ $(document).ready(function () {
         );
     };
 
-    twitchSearchFunction();
+   
     //});
 });
 
