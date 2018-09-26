@@ -7,14 +7,13 @@ var igdbClientID = "efabb003d9fafebaa5de78b86216cd85";
 var igdbQueryURL = "https://api-endpoint.igdb.com";
 var twitchClientID = "vaio0m3xzniwve47sl16xucnwvluef";
 var twitchQueryURL = "https://api.twitch.tv/helix";
-var twitchGameID = "33214"; // hard coded game ID var
-var gameName = "Mario";
+var twitchGameID = ""; // hard coded game ID var
+var gameName = "Call of Duty";
 var igdbID;
 var igdbNameReturn;
 var igdbSummaryReturn;
 var igdbEsrbReturn;
 var igdbGameImages = [];
-var twitchGameID;
 var gameResponce;
 var twitchUserID;
 var twitchUserNameReturn;
@@ -32,6 +31,8 @@ $(document).ready(function () {
         console.log(igdbID);
         callTwo();
         twitchSearchFunction();
+        getStreamer();
+        stream();
 
     });
     $.ajax({
@@ -70,7 +71,7 @@ $(document).ready(function () {
             console.log(response[0]);
             igdbNameReturn = response[0].name;
 
-            twitchSearchFunction();//calls twitch search
+            //twitchSearchFunction();//calls twitch search
 
             igdbSummaryReturn = response[0].summary;
 
@@ -112,9 +113,9 @@ $(document).ready(function () {
             $("#info").append("<p class='bold'>Rated ESRB: " + igdbEsrbReturn + "</p>");
 
             $("#gName").empty();
-            $("#gName").text("ID Number: " + igdbID + "- Game Name: " + igdbNameReturn);
+            $("#gName").text("Game Name: " + igdbNameReturn);
             $("#fortnite").empty();
-            $("#fortnite");
+            $("#fortnite").attr('src', $("img").attr(igdbGameImages));
 
 
 
@@ -166,25 +167,28 @@ $(document).ready(function () {
             console.log(response.data); //response for details of game from twitch
 
             twitchGameID = response.data[0].id;
+            console.log(twitchGameID)
 
             return twitchGameID;
 
-        }).then(function (twitchGameID) {
-
-
-            //only AFTER that is finished and we have the ID of game 
-            //Run ajax to grab stream data from twich useing ID of game
-            $.ajax({
-                type: 'GET',
-                url: twitchQueryURL + '/streams?game_id=' + twitchGameID, //URL + the ID of game
-                dataType: 'json',
-                headers: {
-                    'Client-ID': twitchClientID,
-                },
-            }).then(function (response) {
-                console.log(response)// array for twitch streams info
-            })
         });
+    };
+    function getStreamer(twitchGameID) {
+
+
+        //only AFTER that is finished and we have the ID of game 
+        //Run ajax to grab stream data from twich useing ID of game
+        $.ajax({
+            type: 'GET',
+            url: twitchQueryURL + '/streams?game_id=' + twitchGameID, //URL + the ID of game
+            dataType: 'json',
+            headers: {
+                'Client-ID': twitchClientID,
+            },
+        }).then(function (response) {
+            console.log(response)// array for twitch streams info
+        })
+
 
         console.log("Twitch Game ID: " + twitchGameID),
 
@@ -199,32 +203,33 @@ $(document).ready(function () {
                 console.log(response.data[0]);// array for twitch streams info (gives most populat stream)
 
                 return twitchUserID = response.data[0].user_id;
-
-
-            }).then(function (twitchUserID) {
-                $.ajax({
-                    type: 'GET',
-                    url: twitchQueryURL + '/users?id=' + twitchUserID, //information on user streaming
-                    dataType: 'json',
-                    headers: {
-                        'Client-ID': twitchClientID,
-                    },
-                }).then(function (response) {
-                    console.log(response.data[0]);
-
-                    twitchUserNameReturn = response.data[0].display_name;
-
-                    console.log(twitchUserNameReturn);
-
-                    var newTwitchVideoURL = twitchVideoURLBase + twitchUserNameReturn;
-
-                    console.log(newTwitchVideoURL)
-
-                    $("#twitchVideo").attr("src", newTwitchVideoURL);
-
-                });
             });
     };
+
+    function stream(twitchUserID) {
+        $.ajax({
+            type: 'GET',
+            url: twitchQueryURL + '/users?id=' + twitchUserID, //information on user streaming
+            dataType: 'json',
+            headers: {
+                'Client-ID': twitchClientID,
+            },
+        }).then(function (response) {
+            console.log(response.data[0]);
+
+            twitchUserNameReturn = response.data[0].display_name;
+
+            console.log(twitchUserNameReturn);
+
+            var newTwitchVideoURL = twitchVideoURLBase + twitchUserNameReturn;
+
+            console.log(newTwitchVideoURL)
+
+            $("#twitchVideo").attr("src", newTwitchVideoURL);
+
+        });
+    };
+
 });
 //establish variables
 
