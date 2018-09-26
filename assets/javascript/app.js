@@ -99,6 +99,18 @@ $(document).ready(function () {
 
 
         });
+    }).then(function() {
+        $.ajax({
+            type: 'GET',
+            url: proxyServerURL + igdbQueryURL + '/reviews/' + igdbID + '?&fields=*',
+            dataType: 'json',
+            headers: {
+                'user-key': igdbClientID,
+                'Accept': 'application/json'
+            }
+        })
+    }).then(function (response) {
+        console.log(response);
     })
 
 
