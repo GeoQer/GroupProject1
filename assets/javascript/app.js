@@ -7,14 +7,16 @@ var igdbClientID = "efabb003d9fafebaa5de78b86216cd85"
 var igdbQueryURL = "https://api-endpoint.igdb.com"
 var twitchClientID = "vaio0m3xzniwve47sl16xucnwvluef"
 var twitchQueryURL = "https://api.twitch.tv/helix"
-var twitchGameID = "33214" // hard coded game ID var
-var gameName = "Diablo"
+var twitchVideoURLBase = "https://player.twitch.tv/?channel="
+var gameName = "PLAYERUNKNOWN'S BATTLEGROUNDS"
 var igdbID;
 var igdbNameReturn;
 var igdbSummaryReturn;
 var igdbEsrbReturn;
 var igdbGameImages = [];
 var twitchGameID;
+var twitchUserID;
+var twitchUserNameReturn;
 
 // Document ready function
 $(document).ready(function () {
@@ -44,45 +46,57 @@ $(document).ready(function () {
         }).then(function (response) {
             igdbGameImages = []; // clears images
 
-           
+
             console.log(response[0]);
             igdbNameReturn = response[0].name;
+
+            twitchSearchFunction();//calls twitch search
+
             igdbSummaryReturn = response[0].summary;
-            switch (response[0].esrb.rating) {
-                case 1:
-                    igdbEsrbReturn = "RP"
-                    break;
-                case 2:
-                    igdbEsrbReturn = "EC"
-                    break;
-                case 3:
-                    igdbEsrbReturn = "E"
-                    break;
-                case 4:
-                    igdbEsrbReturn = "E10+"
-                    break;
-                case 5:
-                    igdbEsrbReturn = "T"
-                    break;
-                case 6:
-                    igdbEsrbReturn = "M"
-                    break;
-                case 7:
-                    igdbEsrbReturn = "AO"
+
+            if (response[0].esrb) {
+                switch (response[0].esrb.rating) {
+                    case 1:
+                        igdbEsrbReturn = "RP"
+                        break;
+                    case 2:
+                        igdbEsrbReturn = "EC"
+                        break;
+                    case 3:
+                        igdbEsrbReturn = "E"
+                        break;
+                    case 4:
+                        igdbEsrbReturn = "E10+"
+                        break;
+                    case 5:
+                        igdbEsrbReturn = "T"
+                        break;
+                    case 6:
+                        igdbEsrbReturn = "M"
+                        break;
+                    case 7:
+                        igdbEsrbReturn = "AO"
+                }
+            }
+            else {
+                igdbEsrbReturn = "N/A"
             }
 
-            igdbGameImages.push(response[0].cover.url); 
+
+            igdbGameImages.push(response[0].cover.url);
             for (let i = 0; i < response[0].screenshots.length; i++) {
                 igdbGameImages.unshift(response[0].screenshots[i].url);
             }
-            
 
-            
+
+
             console.log(igdbGameImages[3]);
 
             console.log("ID Number: " + igdbID + "- Game Name: " + igdbNameReturn);
             console.log("Game Summary: " + igdbSummaryReturn);
             console.log("Rated ESRB: " + igdbEsrbReturn);
+
+
 
         });
     })
@@ -91,33 +105,68 @@ $(document).ready(function () {
 
     function twitchSearchFunction() { //funtion for twitch search put into a funtion for callback reasons
         // ajax call for twitch to give game ID
+
+
         $.ajax({
             type: 'GET',
-            url: twitchQueryURL + "/", //URL + name of game and search perams. need to look up how
+            url: twitchQueryURL + "/games?name=" + igdbNameReturn, //URL + name of game and search perams. need to look up how
             dataType: 'json',
             headers: {
                 'Client-ID': twitchClientID,
             },
         }).then(function (response) {
-            console.log(response); //response for details of game from twitch
+            console.log(response.data); //response for details of game from twitch
 
-            // This ajax below has been tested and works. but since it requires previous ajax information it wornt work without hardcodeing
-        }).then( //only AFTER that is finished and we have the ID of game 
+            twitchGameID = response.data[0].id;
+
+            return twitchGameID;
+
+        }).then(function (twitchGameID) {
+
+
+            //only AFTER that is finished and we have the ID of game 
             //Run ajax to grab stream data from twich useing ID of game
-            $.ajax({
-                type: 'GET',
-                url: twitchQueryURL + '/streams?game_id=' + twitchGameID, //URL + the ID of game
-                dataType: 'json',
-                headers: {
-                    'Client-ID': twitchClientID,
-                },
-            }).then(function (response) {
-                console.log(response)// array for twitch streams info
-            })
-        );
-    }
 
-    // twitchSearchFunction();
+            console.log("Twitch Game ID: " + twitchGameID),
+
+                $.ajax({
+                    type: 'GET',
+                    url: twitchQueryURL + '/streams?game_id=' + twitchGameID, //URL + the ID of game
+                    dataType: 'json',
+                    headers: {
+                        'Client-ID': twitchClientID,
+                    },
+                }).then(function (response) {
+                    console.log(response.data[0]);// array for twitch streams info (gives most populat stream)
+
+                    return twitchUserID = response.data[0].user_id;
+
+
+                }).then(function (twitchUserID) {
+                    $.ajax({
+                        type: 'GET',
+                        url: twitchQueryURL + '/users?id=' + twitchUserID, //information on user streaming
+                        dataType: 'json',
+                        headers: {
+                            'Client-ID': twitchClientID,
+                        },
+                    }).then(function(response) {
+                        console.log(response.data[0]);
+
+                        twitchUserNameReturn = response.data[0].display_name;
+
+                        console.log(twitchUserNameReturn);
+
+                        var newTwitchVideoURL = twitchVideoURLBase + twitchUserNameReturn;
+
+                        console.log(newTwitchVideoURL)
+
+                        $("#twitchVideo").attr("src", newTwitchVideoURL);
+
+                    })
+                })
+        });
+    }
 
 })
 
