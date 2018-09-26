@@ -2,7 +2,6 @@
 // igdb API Documentation: https://igdb.github.io/api/
 // Twitch API  Documentation: https://dev.twitch.tv/docs
 
-<<<<<<< HEAD
 var proxyServerURL = "https://damp-everglades-65293.herokuapp.com/";
 var igdbClientID = "efabb003d9fafebaa5de78b86216cd85";
 var igdbQueryURL = "https://api-endpoint.igdb.com";
@@ -10,34 +9,23 @@ var twitchClientID = "vaio0m3xzniwve47sl16xucnwvluef";
 var twitchQueryURL = "https://api.twitch.tv/helix";
 var twitchGameID = "33214"; // hard coded game ID var
 var gameName = "Mario";
-=======
-var proxyServerURL = "https://damp-everglades-65293.herokuapp.com/"
-var igdbClientID = "efabb003d9fafebaa5de78b86216cd85"
-var igdbQueryURL = "https://api-endpoint.igdb.com"
-var twitchClientID = "vaio0m3xzniwve47sl16xucnwvluef"
-var twitchQueryURL = "https://api.twitch.tv/helix"
-var twitchVideoURLBase = "https://player.twitch.tv/?channel="
-var gameName = "PLAYERUNKNOWN'S BATTLEGROUNDS"
->>>>>>> fc95caf108499674a09919fb1ecadd26e1406aa0
 var igdbID;
 var igdbNameReturn;
 var igdbSummaryReturn;
 var igdbEsrbReturn;
 var igdbGameImages = [];
 var twitchGameID;
-<<<<<<< HEAD
 var gameResponce;
-=======
 var twitchUserID;
 var twitchUserNameReturn;
->>>>>>> fc95caf108499674a09919fb1ecadd26e1406aa0
+var twitchVideoURLBase = "https://player.twitch.tv/?channel="
 
 // Document ready function
 $(document).ready(function () {
     // $("#add-game").on("click", function (event) {
     //event.preventDefault();
 
-    $("#searchls").on("click",".gamebtn", function (event) {
+    $("#searchls").on("click", ".gamebtn", function (event) {
         //event.preventDefault();
         $("#searchls").empty();
         igdbID = parseInt($(this).attr("value"));
@@ -66,7 +54,7 @@ $(document).ready(function () {
         //console.log(igdbID);
 
     });
-    function callTwo () {
+    function callTwo() {
         $.ajax({
             type: 'GET',
             url: proxyServerURL + igdbQueryURL + '/games/' + igdbID + '?search=&fields=*',
@@ -114,7 +102,6 @@ $(document).ready(function () {
                 igdbEsrbReturn = "N/A"
             }
 
-<<<<<<< HEAD
             igdbGameImages.push(response[0].cover.url);
             for (let i = 0; i < response[0].screenshots.length; i++) {
                 igdbGameImages.unshift(response[0].screenshots[i].url);
@@ -122,7 +109,7 @@ $(document).ready(function () {
             $("#info").empty();
             $("#info").text("Game Summary: " + igdbSummaryReturn);
             $("#info").append("<br>");
-            $("#info").append("<p class='bold'>Rated ESRB: " + igdbEsrbReturn+"</p>");
+            $("#info").append("<p class='bold'>Rated ESRB: " + igdbEsrbReturn + "</p>");
 
             $("#gName").empty();
             $("#gName").text("ID Number: " + igdbID + "- Game Name: " + igdbNameReturn);
@@ -131,7 +118,6 @@ $(document).ready(function () {
 
 
 
-=======
 
             igdbGameImages.push(response[0].cover.url);
             for (let i = 0; i < response[0].screenshots.length; i++) {
@@ -140,7 +126,6 @@ $(document).ready(function () {
 
 
 
->>>>>>> fc95caf108499674a09919fb1ecadd26e1406aa0
             console.log(igdbGameImages[3]);
 
             console.log("ID Number: " + igdbID + "- Game Name: " + igdbNameReturn);
@@ -149,24 +134,20 @@ $(document).ready(function () {
 
 
 
-        });
-<<<<<<< HEAD
-    };
-=======
-    }).then(function() {
-        $.ajax({
-            type: 'GET',
-            url: proxyServerURL + igdbQueryURL + '/reviews/' + igdbID + '?&fields=*',
-            dataType: 'json',
-            headers: {
-                'user-key': igdbClientID,
-                'Accept': 'application/json'
-            }
+        }).then(function () {
+            $.ajax({
+                type: 'GET',
+                url: proxyServerURL + igdbQueryURL + '/reviews/' + igdbID + '?&fields=*',
+                dataType: 'json',
+                headers: {
+                    'user-key': igdbClientID,
+                    'Accept': 'application/json'
+                }
+            })
+        }).then(function (response) {
+            console.log(response);
         })
-    }).then(function (response) {
-        console.log(response);
-    })
->>>>>>> fc95caf108499674a09919fb1ecadd26e1406aa0
+    };
 
 
 
@@ -193,7 +174,6 @@ $(document).ready(function () {
 
             //only AFTER that is finished and we have the ID of game 
             //Run ajax to grab stream data from twich useing ID of game
-<<<<<<< HEAD
             $.ajax({
                 type: 'GET',
                 url: twitchQueryURL + '/streams?game_id=' + twitchGameID, //URL + the ID of game
@@ -204,56 +184,48 @@ $(document).ready(function () {
             }).then(function (response) {
                 console.log(response)// array for twitch streams info
             })
-        );
-    };
-=======
+        });
 
-            console.log("Twitch Game ID: " + twitchGameID),
+        console.log("Twitch Game ID: " + twitchGameID),
 
+            $.ajax({
+                type: 'GET',
+                url: twitchQueryURL + '/streams?game_id=' + twitchGameID, //URL + the ID of game
+                dataType: 'json',
+                headers: {
+                    'Client-ID': twitchClientID,
+                },
+            }).then(function (response) {
+                console.log(response.data[0]);// array for twitch streams info (gives most populat stream)
+
+                return twitchUserID = response.data[0].user_id;
+
+
+            }).then(function (twitchUserID) {
                 $.ajax({
                     type: 'GET',
-                    url: twitchQueryURL + '/streams?game_id=' + twitchGameID, //URL + the ID of game
+                    url: twitchQueryURL + '/users?id=' + twitchUserID, //information on user streaming
                     dataType: 'json',
                     headers: {
                         'Client-ID': twitchClientID,
                     },
                 }).then(function (response) {
-                    console.log(response.data[0]);// array for twitch streams info (gives most populat stream)
+                    console.log(response.data[0]);
 
-                    return twitchUserID = response.data[0].user_id;
+                    twitchUserNameReturn = response.data[0].display_name;
 
+                    console.log(twitchUserNameReturn);
 
-                }).then(function (twitchUserID) {
-                    $.ajax({
-                        type: 'GET',
-                        url: twitchQueryURL + '/users?id=' + twitchUserID, //information on user streaming
-                        dataType: 'json',
-                        headers: {
-                            'Client-ID': twitchClientID,
-                        },
-                    }).then(function(response) {
-                        console.log(response.data[0]);
+                    var newTwitchVideoURL = twitchVideoURLBase + twitchUserNameReturn;
 
-                        twitchUserNameReturn = response.data[0].display_name;
+                    console.log(newTwitchVideoURL)
 
-                        console.log(twitchUserNameReturn);
+                    $("#twitchVideo").attr("src", newTwitchVideoURL);
 
-                        var newTwitchVideoURL = twitchVideoURLBase + twitchUserNameReturn;
-
-                        console.log(newTwitchVideoURL)
-
-                        $("#twitchVideo").attr("src", newTwitchVideoURL);
-
-                    })
-                })
-        });
-    }
->>>>>>> fc95caf108499674a09919fb1ecadd26e1406aa0
-
-   
-    //});
+                });
+            });
+    };
 });
-
 //establish variables
 
 // initialize libraries and APIs
