@@ -17,6 +17,8 @@ var igdbGameImages = [];
 var twitchGameID;
 var twitchUserID;
 var twitchUserNameReturn;
+var igdbReviewPercent;
+var idgbReviewAmount;
 
 // Document ready function
 $(document).ready(function () {
@@ -88,10 +90,10 @@ $(document).ready(function () {
                 igdbGameImages.unshift(response[0].screenshots[i].url);
             }
 
+            idgbReviewAmount = response[0].total_rating_count;
+            igdbReviewPercent = response[0].total_rating;
 
-
-            console.log(igdbGameImages[3]);
-
+            console.log("Rating Percentage: " + igdbReviewPercent + " Times Rated: " + idgbReviewAmount);
             console.log("ID Number: " + igdbID + "- Game Name: " + igdbNameReturn);
             console.log("Game Summary: " + igdbSummaryReturn);
             console.log("Rated ESRB: " + igdbEsrbReturn);
@@ -99,18 +101,6 @@ $(document).ready(function () {
 
 
         });
-    }).then(function() {
-        $.ajax({
-            type: 'GET',
-            url: proxyServerURL + igdbQueryURL + '/reviews/' + igdbID + '?&fields=*',
-            dataType: 'json',
-            headers: {
-                'user-key': igdbClientID,
-                'Accept': 'application/json'
-            }
-        })
-    }).then(function (response) {
-        console.log(response);
     })
 
 
