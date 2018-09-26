@@ -2,23 +2,33 @@
 // igdb API Documentation: https://igdb.github.io/api/
 // Twitch API  Documentation: https://dev.twitch.tv/docs
 
-var proxyServerURL = "https://damp-everglades-65293.herokuapp.com/"
-var igdbClientID = "efabb003d9fafebaa5de78b86216cd85"
-var igdbQueryURL = "https://api-endpoint.igdb.com"
-var twitchClientID = "vaio0m3xzniwve47sl16xucnwvluef"
-var twitchQueryURL = "https://api.twitch.tv/helix"
-var twitchGameID = "33214" // hard coded game ID var
-var gameName = "Diablo"
+var proxyServerURL = "https://damp-everglades-65293.herokuapp.com/";
+var igdbClientID = "efabb003d9fafebaa5de78b86216cd85";
+var igdbQueryURL = "https://api-endpoint.igdb.com";
+var twitchClientID = "vaio0m3xzniwve47sl16xucnwvluef";
+var twitchQueryURL = "https://api.twitch.tv/helix";
+var twitchGameID = "33214"; // hard coded game ID var
+var gameName = "Mario";
 var igdbID;
 var igdbNameReturn;
 var igdbSummaryReturn;
 var igdbEsrbReturn;
 var igdbGameImages = [];
 var twitchGameID;
+var gameResponce;
 
 // Document ready function
 $(document).ready(function () {
+    // $("#add-game").on("click", function (event) {
+    //event.preventDefault();
 
+    $("#searchls").on("click",".gamebtn", function (event) {
+        //event.preventDefault();
+        $("#searchls").empty();
+        igdbID = parseInt($(this).attr("value"));
+        console.log(igdbID);
+        callTwo();
+    });
     $.ajax({
         type: 'GET',
         url: proxyServerURL + igdbQueryURL + '/games/?search=' + gameName + '&filter[category][eq]=0&fields=*&limit=15',
@@ -28,11 +38,18 @@ $(document).ready(function () {
             'Accept': 'application/json'
         }
     }).then(function (response) {
-        console.log(response);
-        igdbID = response[0].id;// The 0 will be what in the array the user selects ( add event grabers)
-        console.log(igdbID);
+        for (let j = 0; j < response.length; j++) {
+            gameResponce = response[j];
 
-    }).then(function () {
+            $("#searchls").append('<button class = "gamebtn" value="' + gameResponce.id + '">' + gameResponce.name);
+            console.log(gameResponce.id);
+        }
+        //console.log(response);
+        //igdbID = response[0].id;// The 0 will be what in the array the user selects ( add event grabers)
+        //console.log(igdbID);
+
+    });
+    function callTwo () {
         $.ajax({
             type: 'GET',
             url: proxyServerURL + igdbQueryURL + '/games/' + igdbID + '?search=&fields=*',
@@ -44,7 +61,7 @@ $(document).ready(function () {
         }).then(function (response) {
             igdbGameImages = []; // clears images
 
-           
+
             console.log(response[0]);
             igdbNameReturn = response[0].name;
             igdbSummaryReturn = response[0].summary;
@@ -71,13 +88,20 @@ $(document).ready(function () {
                     igdbEsrbReturn = "AO"
             }
 
-            igdbGameImages.push(response[0].cover.url); 
+            igdbGameImages.push(response[0].cover.url);
             for (let i = 0; i < response[0].screenshots.length; i++) {
                 igdbGameImages.unshift(response[0].screenshots[i].url);
-            }
-            
+            };
+            $("#info").empty();
+            $("#info").text("Game Summary: " + igdbSummaryReturn);
 
-            
+            $("#gName").empty();
+            $("#gName").text("ID Number: " + igdbID + "- Game Name: " + igdbNameReturn);
+            $("#fortnite").empty();
+            $("#fortnite");
+
+
+
             console.log(igdbGameImages[3]);
 
             console.log("ID Number: " + igdbID + "- Game Name: " + igdbNameReturn);
@@ -85,7 +109,7 @@ $(document).ready(function () {
             console.log("Rated ESRB: " + igdbEsrbReturn);
 
         });
-    })
+    };
 
 
 
@@ -115,11 +139,11 @@ $(document).ready(function () {
                 console.log(response)// array for twitch streams info
             })
         );
-    }
+    };
 
-    // twitchSearchFunction();
-
-})
+    twitchSearchFunction();
+    //});
+});
 
 //establish variables
 
