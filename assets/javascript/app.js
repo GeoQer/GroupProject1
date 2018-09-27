@@ -114,7 +114,7 @@ $(document).ready(function () {
             $("#gName").empty();
             $("#gName").text("Game Name: " + igdbNameReturn);
             $("#fortnite").empty();
-            $("#fortnite").attr('src', $("img").attr(igdbGameImages[3]));
+            $("#fortnite").attr('src', response[0].cover.url);
 
             igdbGameImages.push(response[0].cover.url);
             for (let i = 0; i < response[0].screenshots.length; i++) {
@@ -136,10 +136,13 @@ $(document).ready(function () {
                     'user-key': igdbClientID,
                     'Accept': 'application/json'
                 }
-            })
-        }).then(function (response) {
-            console.log(response);
-        })
+            }).then(function (response) {
+                    console.log(response);
+
+                    $(".review").empty();
+                    $(".review").text(response);
+                })
+        });
     };
 
 
