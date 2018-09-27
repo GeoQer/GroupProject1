@@ -17,21 +17,46 @@ var gameResponce;
 var twitchUserID;
 var twitchUserNameReturn;
 var twitchVideoURLBase = "https://player.twitch.tv/?channel="
+var lastLookup = "";
+var gName2;
+
+// Initialize Firebase
+var config = {
+    apiKey: "AIzaSyBI7IaKzIvByErQWy6uA94tzrW8l-gZRK8",
+    authDomain: "gamesearch-groupproject1.firebaseapp.com",
+    databaseURL: "https://gamesearch-groupproject1.firebaseio.com",
+    projectId: "gamesearch-groupproject1",
+    storageBucket: "gamesearch-groupproject1.appspot.com",
+    messagingSenderId: "793919826809"
+};
+firebase.initializeApp(config);
+
+var database = firebase.database();
+
 
 // Document ready function
 $(document).ready(function () {
-    // $("#add-game").on("click", function (event) {
+    //$("#add-game").on("click", function (event) {
     //event.preventDefault();
+    database.ref().on('child_added', function (childSnapshot) {
+        console.log(childSnapshot.val().name);
+        console.log(childSnapshot.val().id);
+        /* lastLookup = childSnapshot.val(); */
+        $("#searchls").prepend('<button class = "gamebtn" value="' + parseInt(childSnapshot.val().id) + '">' + childSnapshot.val().name);
+    });
 
     $("#searchls").on("click", ".gamebtn", function (event) {
         //event.preventDefault();
         $("#searchls").empty();
         igdbID = parseInt($(this).attr("value"));
+        gName2 = $(this).attr("id");
         console.log(igdbID);
         callTwo(twitchSearchFunction(getStreamer(stream())));
-        // twitchSearchFunction();
-        // getStreamer();
-        // stream();
+        var gameHistory = {
+            name: gName2,
+            id: igdbID,
+        };
+        database.ref().push(gameHistory);
 
     });
     $.ajax({
@@ -46,7 +71,7 @@ $(document).ready(function () {
         for (let j = 0; j < response.length; j++) {
             gameResponce = response[j];
 
-            $("#searchls").append('<button class = "gamebtn btn-warning" value="' + gameResponce.id + '">' + gameResponce.name);
+            $("#searchls").append('<button class = "gamebtn" value="' + gameResponce.id + '" id = "' + gameResponce.name + '">' + gameResponce.name);
             console.log(gameResponce.id);
         }
         //console.log(response);
@@ -225,6 +250,7 @@ $(document).ready(function () {
     };
 
 });
+//});
 //establish variables
 
 // initialize libraries and APIs
@@ -245,5 +271,3 @@ $(document).ready(function () {
     //display game name on page with search count information from firebase
 
     //display "trending" graph and/or consumer rating graph
-
-
