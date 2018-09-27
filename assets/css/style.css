@@ -1,16 +1,21 @@
 #fortnite {
     height: auto;
     width: 100%;
-};
-.btn-{
-    margin: 10px;
-};
+}
+.gamebtn{
+    margin: 5px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 14pt;
+}
 .bold{
-    font-weight: bold
-};
+    font-weight: bold;
+}
 .jumbotron{
     background: transparent;
 }
 textarea{
     background: transparent;
+}
+body{
+    color: aliceblue;
 }

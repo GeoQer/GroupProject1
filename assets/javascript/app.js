@@ -1,4 +1,3 @@
-
 // igdb API Documentation: https://igdb.github.io/api/
 // Twitch API  Documentation: https://dev.twitch.tv/docs
 
@@ -26,7 +25,7 @@ $(document).ready(function () {
     // $("#add-game").on("click", function (event) {
     //event.preventDefault();
 
-  $("#searchls").on("click", ".gamebtn", function (event) {
+    $("#searchls").on("click", ".gamebtn", function (event) {
         //event.preventDefault();
         $("#searchls").empty();
         igdbID = parseInt($(this).attr("value"));
@@ -49,7 +48,7 @@ $(document).ready(function () {
         for (let j = 0; j < response.length; j++) {
             gameResponce = response[j];
 
-            $("#searchls").append('<button class = "gamebtn" value="' + gameResponce.id + '">' + gameResponce.name);
+            $("#searchls").append('<button class = "gamebtn btn-warning" value="' + gameResponce.id + '">' + gameResponce.name);
             console.log(gameResponce.id);
         }
         //console.log(response);
