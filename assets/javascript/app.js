@@ -1,3 +1,4 @@
+
 // igdb API Documentation: https://igdb.github.io/api/
 // Twitch API  Documentation: https://dev.twitch.tv/docs
 
@@ -6,8 +7,10 @@ var igdbClientID = "efabb003d9fafebaa5de78b86216cd85";
 var igdbQueryURL = "https://api-endpoint.igdb.com";
 var twitchClientID = "vaio0m3xzniwve47sl16xucnwvluef";
 var twitchQueryURL = "https://api.twitch.tv/helix";
-var twitchGameID = "9509"; // hard coded game ID var
+
+var twitchGameID = ""; // hard coded game ID var
 var gameName = "Call of Duty";
+
 var igdbID;
 var igdbNameReturn;
 var igdbSummaryReturn;
@@ -17,21 +20,44 @@ var gameResponce;
 var twitchUserID;
 var twitchUserNameReturn;
 var twitchVideoURLBase = "https://player.twitch.tv/?channel="
+var gName2;
+
+// Initialize Firebase
+var config = {
+    apiKey: "AIzaSyBI7IaKzIvByErQWy6uA94tzrW8l-gZRK8",
+    authDomain: "gamesearch-groupproject1.firebaseapp.com",
+    databaseURL: "https://gamesearch-groupproject1.firebaseio.com",
+    projectId: "gamesearch-groupproject1",
+    storageBucket: "gamesearch-groupproject1.appspot.com",
+    messagingSenderId: "793919826809"
+};
+firebase.initializeApp(config);
+
+var database = firebase.database();
+
 
 // Document ready function
 $(document).ready(function () {
-    // $("#add-game").on("click", function (event) {
+    //$("#add-game").on("click", function (event) {
     //event.preventDefault();
+    database.ref().on('child_added', function (childSnapshot) {
+        console.log(childSnapshot.val().name);
+        console.log(childSnapshot.val().id);
+        /* lastLookup = childSnapshot.val(); */
+        $("#searchls").prepend('<button class = "gamebtn" value="' + parseInt(childSnapshot.val().id) + '">' + childSnapshot.val().name);
+    });
 
     $("#searchls").on("click", ".gamebtn", function (event) {
         //event.preventDefault();
         $("#searchls").empty();
         igdbID = parseInt($(this).attr("value"));
+        gName2 = $(this).attr("id");
         console.log(igdbID);
-        callTwo(twitchSearchFunction(getStreamer(stream())));
-        // twitchSearchFunction();
-        // getStreamer();
-        // stream();
+        var gameHistory = {
+            name: gName2,
+            id: igdbID,
+        };
+        database.ref().push(gameHistory);
 
     });
     $.ajax({
@@ -46,7 +72,7 @@ $(document).ready(function () {
         for (let j = 0; j < response.length; j++) {
             gameResponce = response[j];
 
-            $("#searchls").append('<button class = "gamebtn btn-warning" value="' + gameResponce.id + '">' + gameResponce.name);
+            $("#searchls").append('<button class = "gamebtn" value="' + gameResponce.id + '" id = "' + gameResponce.name + '">' + gameResponce.name);
             console.log(gameResponce.id);
         }
         //console.log(response);
@@ -114,7 +140,7 @@ $(document).ready(function () {
             $("#gName").empty();
             $("#gName").text("Game Name: " + igdbNameReturn);
             $("#fortnite").empty();
-            $("#fortnite").attr('src', $("img").attr(igdbGameImages[3]));
+            $("#fortnite").attr('src', $("img").attr(igdbGameImages));
 
             igdbGameImages.push(response[0].cover.url);
             for (let i = 0; i < response[0].screenshots.length; i++) {
@@ -144,7 +170,7 @@ $(document).ready(function () {
 
 
 
-    function twitchSearchFunction(igdbNameReturn) { //funtion for twitch search put into a funtion for callback reasons
+    function twitchSearchFunction() { //funtion for twitch search put into a funtion for callback reasons
         // ajax call for twitch to give game ID
 
 
@@ -222,6 +248,7 @@ $(document).ready(function () {
     };
 
 });
+//});
 //establish variables
 
 // initialize libraries and APIs
@@ -242,5 +269,3 @@ $(document).ready(function () {
     //display game name on page with search count information from firebase
 
     //display "trending" graph and/or consumer rating graph
-
-
