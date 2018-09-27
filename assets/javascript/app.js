@@ -7,8 +7,10 @@ var igdbClientID = "efabb003d9fafebaa5de78b86216cd85";
 var igdbQueryURL = "https://api-endpoint.igdb.com";
 var twitchClientID = "vaio0m3xzniwve47sl16xucnwvluef";
 var twitchQueryURL = "https://api.twitch.tv/helix";
-var twitchGameID = "9509"; // hard coded game ID var
+
+var twitchGameID = ""; // hard coded game ID var
 var gameName = "Call of Duty";
+
 var igdbID;
 var igdbNameReturn;
 var igdbSummaryReturn;
@@ -24,7 +26,7 @@ $(document).ready(function () {
     // $("#add-game").on("click", function (event) {
     //event.preventDefault();
 
-    $("#searchls").on("click", ".gamebtn", function (event) {
+  $("#searchls").on("click", ".gamebtn", function (event) {
         //event.preventDefault();
         $("#searchls").empty();
         igdbID = parseInt($(this).attr("value"));
@@ -117,23 +119,16 @@ $(document).ready(function () {
             $("#fortnite").empty();
             $("#fortnite").attr('src', $("img").attr(igdbGameImages));
 
-
-
-
             igdbGameImages.push(response[0].cover.url);
             for (let i = 0; i < response[0].screenshots.length; i++) {
                 igdbGameImages.unshift(response[0].screenshots[i].url);
             }
-
-
 
             console.log(igdbGameImages[3]);
 
             console.log("ID Number: " + igdbID + "- Game Name: " + igdbNameReturn);
             console.log("Game Summary: " + igdbSummaryReturn);
             console.log("Rated ESRB: " + igdbEsrbReturn);
-
-
 
         }).then(function () {
             $.ajax({
@@ -174,7 +169,6 @@ $(document).ready(function () {
         });
     };
     function getStreamer(twitchGameID) {
-
 
         //only AFTER that is finished and we have the ID of game 
         //Run ajax to grab stream data from twich useing ID of game
