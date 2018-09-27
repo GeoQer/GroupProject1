@@ -7,7 +7,7 @@ var igdbClientID = "efabb003d9fafebaa5de78b86216cd85";
 var igdbQueryURL = "https://api-endpoint.igdb.com";
 var twitchClientID = "vaio0m3xzniwve47sl16xucnwvluef";
 var twitchQueryURL = "https://api.twitch.tv/helix";
-var twitchGameID = ""; // hard coded game ID var
+var twitchGameID = "9509"; // hard coded game ID var
 var gameName = "Call of Duty";
 var igdbID;
 var igdbNameReturn;

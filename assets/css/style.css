@@ -8,3 +8,9 @@
 .bold{
     font-weight: bold
 };
+.jumbotron{
+    background: transparent;
+}
+textarea{
+    background: transparent;
+}
