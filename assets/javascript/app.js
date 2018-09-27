@@ -1,4 +1,3 @@
-
 // igdb API Documentation: https://igdb.github.io/api/
 // Twitch API  Documentation: https://dev.twitch.tv/docs
 
@@ -7,10 +6,8 @@ var igdbClientID = "efabb003d9fafebaa5de78b86216cd85";
 var igdbQueryURL = "https://api-endpoint.igdb.com";
 var twitchClientID = "vaio0m3xzniwve47sl16xucnwvluef";
 var twitchQueryURL = "https://api.twitch.tv/helix";
-
-var twitchGameID = ""; // hard coded game ID var
+var twitchGameID = "9509"; // hard coded game ID var
 var gameName = "Call of Duty";
-
 var igdbID;
 var igdbNameReturn;
 var igdbSummaryReturn;
@@ -20,6 +17,7 @@ var gameResponce;
 var twitchUserID;
 var twitchUserNameReturn;
 var twitchVideoURLBase = "https://player.twitch.tv/?channel="
+var lastLookup = "";
 var gName2;
 
 // Initialize Firebase
@@ -53,6 +51,7 @@ $(document).ready(function () {
         igdbID = parseInt($(this).attr("value"));
         gName2 = $(this).attr("id");
         console.log(igdbID);
+        callTwo(twitchSearchFunction(getStreamer(stream())));
         var gameHistory = {
             name: gName2,
             id: igdbID,
@@ -140,7 +139,7 @@ $(document).ready(function () {
             $("#gName").empty();
             $("#gName").text("Game Name: " + igdbNameReturn);
             $("#fortnite").empty();
-            $("#fortnite").attr('src', $("img").attr(igdbGameImages));
+            $("#fortnite").attr('src', $("img").attr(igdbGameImages[3]));
 
             igdbGameImages.push(response[0].cover.url);
             for (let i = 0; i < response[0].screenshots.length; i++) {
@@ -170,7 +169,7 @@ $(document).ready(function () {
 
 
 
-    function twitchSearchFunction() { //funtion for twitch search put into a funtion for callback reasons
+    function twitchSearchFunction(igdbNameReturn) { //funtion for twitch search put into a funtion for callback reasons
         // ajax call for twitch to give game ID
 
 
