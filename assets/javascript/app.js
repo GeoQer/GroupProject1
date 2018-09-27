@@ -28,10 +28,10 @@ $(document).ready(function () {
         $("#searchls").empty();
         igdbID = parseInt($(this).attr("value"));
         console.log(igdbID);
-        callTwo();
-        twitchSearchFunction();
-        getStreamer();
-        stream();
+        callTwo(twitchSearchFunction(getStreamer(stream())));
+        // twitchSearchFunction();
+        // getStreamer();
+        // stream();
 
     });
     $.ajax({
@@ -114,7 +114,7 @@ $(document).ready(function () {
             $("#gName").empty();
             $("#gName").text("Game Name: " + igdbNameReturn);
             $("#fortnite").empty();
-            $("#fortnite").attr('src', $("img").attr(igdbGameImages));
+            $("#fortnite").attr('src', $("img").attr(igdbGameImages[3]));
 
             igdbGameImages.push(response[0].cover.url);
             for (let i = 0; i < response[0].screenshots.length; i++) {
@@ -144,7 +144,7 @@ $(document).ready(function () {
 
 
 
-    function twitchSearchFunction() { //funtion for twitch search put into a funtion for callback reasons
+    function twitchSearchFunction(igdbNameReturn) { //funtion for twitch search put into a funtion for callback reasons
         // ajax call for twitch to give game ID
 
 
