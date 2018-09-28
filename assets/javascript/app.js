@@ -61,8 +61,7 @@ $(document).ready(function () {
     $("#add-game").on("click", function (event) {
         event.preventDefault();
         gameName = $('#game-input').val().trim();
-        
-
+        $('#searchls').empty();
 
         $.ajax({
             type: 'GET',
