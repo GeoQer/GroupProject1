@@ -21,6 +21,10 @@ var idgbReviewAmount;
 var twitchVideoURLBase = "https://player.twitch.tv/?channel="
 var lastLookup = "";
 var gName2;
+var imagesSplitMid = [];
+var imagesSplitEnd = [];
+var imagesSplitBase = [];
+var imagesCombined = [];
 
 // Initialize Firebase
 var config = {
@@ -138,6 +142,22 @@ $(document).ready(function () {
             for (let i = 0; i < response[0].screenshots.length; i++) {
                 igdbGameImages.unshift(response[0].screenshots[i].url);
             };
+
+            for (let i = 0; i < igdbGameImages.length; i++) {
+                imagesSplit = igdbGameImages[i].split("t_");
+                imagesSplitEnd = imagesSplit[1].split("/");
+                imagesSplitBase = imagesSplit[0];
+                imagesSplitEnd[0] = "t_1080p";
+            }
+
+            imagesCombined = imagesSplitBase + imagesSplitEnd[0] + "/" + imagesSplitEnd[1];
+
+            console.log(imagesCombined);
+            console.log(imagesSplitBase);
+            console.log(imagesSplit);
+            console.log(imagesSplitEnd);
+            console.log(igdbGameImages);
+
             $("#info").empty();
             $("#info").text("Game Summary: " + igdbSummaryReturn);
             $("#info").append("<br>");
@@ -146,7 +166,7 @@ $(document).ready(function () {
             $("#gName").empty();
             $("#gName").text("Game Name: " + igdbNameReturn);
             $("#fortnite").empty();
-            $("#fortnite").attr('src', response[0].cover.url);
+            $("#fortnite").attr('src', imagesCombined);
 
             console.log(igdbGameImages);
 
