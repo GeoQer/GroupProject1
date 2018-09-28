@@ -148,13 +148,17 @@ $(document).ready(function () {
             $("#fortnite").empty();
             $("#fortnite").attr('src', response[0].cover.url);
 
-            igdbGameImages.push(response[0].cover.url);
-            for (let i = 0; i < response[0].screenshots.length; i++) {
-                igdbGameImages.unshift(response[0].screenshots[i].url);
-            }
+            console.log(igdbGameImages);
 
-            console.log(igdbGameImages[3]);
+            // igdbGameImages.push(response[0].cover.url);
+            // for (let i = 0; i < response[0].screenshots.length; i++) {
+            //     igdbGameImages.unshift(response[0].screenshots[i].url);
+            // }
 
+            idgbReviewAmount = response[0].total_rating_count;
+            igdbReviewPercent = response[0].total_rating;
+
+            console.log("Rating Percent: " + igdbReviewPercent + " Amount Rated: " + idgbReviewAmount);
             console.log("ID Number: " + igdbID + "- Game Name: " + igdbNameReturn);
             console.log("Game Summary: " + igdbSummaryReturn);
             console.log("Rated ESRB: " + igdbEsrbReturn);
