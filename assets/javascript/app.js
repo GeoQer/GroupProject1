@@ -6,7 +6,7 @@ var igdbClientID = "efabb003d9fafebaa5de78b86216cd85";
 var igdbQueryURL = "https://api-endpoint.igdb.com";
 var twitchClientID = "vaio0m3xzniwve47sl16xucnwvluef";
 var twitchQueryURL = "https://api.twitch.tv/helix";
-var twitchGameID = ""; // hard coded game ID var
+var twitchGameID; 
 var gameName;
 var igdbID;
 var igdbNameReturn;
@@ -16,6 +16,8 @@ var igdbGameImages = [];
 var gameResponce;
 var twitchUserID;
 var twitchUserNameReturn;
+var igdbReviewPercent;
+var idgbReviewAmount;
 var twitchVideoURLBase = "https://player.twitch.tv/?channel="
 var lastLookup = "";
 var gName2;
@@ -146,13 +148,17 @@ $(document).ready(function () {
             $("#fortnite").empty();
             $("#fortnite").attr('src', response[0].cover.url);
 
-            igdbGameImages.push(response[0].cover.url);
-            for (let i = 0; i < response[0].screenshots.length; i++) {
-                igdbGameImages.unshift(response[0].screenshots[i].url);
-            }
+            console.log(igdbGameImages);
 
-            console.log(igdbGameImages[3]);
+            // igdbGameImages.push(response[0].cover.url);
+            // for (let i = 0; i < response[0].screenshots.length; i++) {
+            //     igdbGameImages.unshift(response[0].screenshots[i].url);
+            // }
 
+            idgbReviewAmount = response[0].total_rating_count;
+            igdbReviewPercent = response[0].total_rating;
+
+            console.log("Rating Percent: " + igdbReviewPercent + " Amount Rated: " + idgbReviewAmount);
             console.log("ID Number: " + igdbID + "- Game Name: " + igdbNameReturn);
             console.log("Game Summary: " + igdbSummaryReturn);
             console.log("Rated ESRB: " + igdbEsrbReturn);
